@@ -1,0 +1,197 @@
+// =====================================================================================
+//
+// 関数
+//
+// =====================================================================================
+@use 'sass:math';
+@use 'sass:map';
+@use 'variables' as *;
+
+// -------------------------------------------------------------------------------------
+// 単位（px等）を除いて数値のみを返す
+//  - 参照： https://css-tricks.com/snippets/sass/strip-unit-function/
+// -------------------------------------------------------------------------------------
+@function strip_unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return math.div($number, ($number * 0 + 1));
+  }
+  @return $number;
+}
+
+// -------------------------------------------------------------------------------------
+// breakpoint指定を数値化する
+//  - 参照： https://css-tricks.com/snippets/sass/strip-unit-function/
+// -------------------------------------------------------------------------------------
+@function get_width_value($width) {
+  @if type-of($width) == 'string' {
+    @if not map.has-key($breakpoints, $width) {
+      @error "Breakpoint `#{$width}` is not defined in $breakpoints.";
+    }
+
+    @return strip_unit(map.get($breakpoints, $width));
+  }
+
+  @return strip_unit($width);
+}
+
+
+// -------------------------------------------------------------------------------------
+// 指定した少数の桁数で丸めて返す
+//  - 参照: https://terkel.jp/archives/2012/12/decimal-digits-and-rounding-sass-function/
+// -------------------------------------------------------------------------------------
+
+@function to_fixed($number, $digits: 0, $round: 'round') {
+  $n: 1;
+  // $number must be a number
+  @if type-of($number) != number {
+    @warn '#{ $number } is not a number.';
+    @return $number;
+  }
+  // $digits must be a unitless number
+  @if type-of($digits) != number {
+    @warn '#{ $digits } is not a number.';
+    @return $number;
+  } @else if not unitless($digits) {
+    @warn '#{ $digits } has a unit.';
+    @return $number;
+  }
+  @for $i from 1 through $digits {
+    $n: $n * 10;
+  }
+  @if $round == 'round' {
+    @return math.div(round($number * $n), $n);
+  } @else if $round == 'ceil' {
+    @return math.div(ceil($number * $n), $n);
+  } @else if $round == 'floor' {
+    @return math.div(floor($number * $n), $n);
+  } @else {
+    @warn '#{ $round } is undefined keyword.';
+    @return $number;
+  }
+}
+
+
+// Round (四捨五入)
+@function round_decimal($number, $digits: 0) {
+  @return to_fixed($number, $digits, 'round');
+}
+
+// Ceil (切り上げ)
+@function ceil_decimal($number, $digits: 0) {
+  @return to_fixed($number, $digits, 'ceil');
+}
+
+// Floor (切り捨て)
+@function floor_decimal($number, $digits: 0) {
+  @return to_fixed($number, $digits, 'floor');
+}
+
+
+
+// -------------------------------------------------------------------------------------
+// clampを返す
+// via: https://blog.looseknot.jp/css/sass-clamp-fontsize.html
+//
+// ▼ 使用例
+// .foo {
+//   font-size: gen_clamp(13, 18); // output: clamp(13px,8.3846153846px + 0.6009615385vw,18px)
+//   font-size: gen_clamp(13); // 第二引数を省略した場合は第一引数の1.5倍が設定される
+//   font-size: gen_clamp(13, 18, 360, 768); // 第三、第四引数で画面幅の閾値を設定
+//   font-size: gen_clamp(13, 18, lg, xxl); // $breakpointsのキー名でも設定可能
+// }
+// -------------------------------------------------------------------------------------
+@function gen_clamp(
+  $fs_min,
+  $fs_max: 0,
+  $width_small: 375px,
+  $width_large: 980px,
+  $digits: 4
+) {
+  $min: strip_unit($fs_min);
+  $max: strip_unit($fs_max);
+
+  @if $max == 0 {
+    $max: $min * 1.5;
+  }
+
+  $ws: get_width_value($width_small);
+  $wl: get_width_value($width_large);
+
+  @if $wl == $ws {
+    @error "$width_small and $width_large must not be the same.";
+  }
+
+  $slope: math.div(($max - $min), ($wl - $ws));
+
+  $preferred_vw: round_decimal(($slope * 100), $digits) * 1vw;
+  $preferred_px: round_decimal(($ws * -1 * $slope + $min), $digits) * 1px;
+
+  @if $max < $min {
+    @return clamp($max * 1px, $preferred_px + $preferred_vw, $min * 1px);
+  }
+
+  @return clamp($min * 1px, $preferred_px + $preferred_vw, $max * 1px);
+}
+
+
+// -------------------------------------------------------------------------------------
+// $width_baseを基準としたピクセル値を指定することで、$width_maxを最大幅として可変するclampを返す
+// （デザインデータ基準で各数値を指定するためのもの）
+// -------------------------------------------------------------------------------------
+@function px($px) {
+  $value: strip_unit($px);
+
+  $rate: math.div(
+    strip_unit($width_max),
+    strip_unit($width_base)
+  );
+
+  $max: $value * $rate;
+
+  @return gen_clamp(
+    $value,
+    $max,
+    $width_base,
+    $width_max
+  );
+}
+
+
+// -------------------------------------------------------------------------------------
+// 余白管理
+// -------------------------------------------------------------------------------------
+@function spacing($key) {
+  @if type-of($key) == 'number' {
+    @return $key * 1px;
+  }
+
+  @if not map.has-key($spacing-map, $key) {
+    @error "Spacing key `#{$key}` not found.";
+  }
+
+  @return map.get($spacing-map, $key);
+}
+
+
+// -------------------------------------------------------------------------------------
+// フォントサイズ
+// -------------------------------------------------------------------------------------
+@function rem($px, $base: $root-font-size) {
+  $px-value: strip_unit($px);
+  $base-value: strip_unit($base);
+
+  @return math.div($px-value, $base-value) * 1rem;
+}
+
+
+@function font_size($key) {
+  @if type-of($key) == 'number' {
+    @return rem($key);
+  }
+
+  @if not map.has-key($font-size-map, $key) {
+    @error "Font size key `#{$key}` not found.";
+  }
+
+  @return rem(map.get($font-size-map, $key));
+}

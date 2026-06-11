@@ -1,0 +1,133 @@
+// =====================================================================================
+//
+// ミックスイン
+//
+// =====================================================================================
+
+@use 'sass:map';
+@use 'variables' as *;
+@use 'functions' as *;
+
+// -------------------------------------------------------------------------------------
+// @mediaを出力
+//
+// ▼「条件：◯◯以上」を指定
+// .example {
+//   @include breakpoint_up(lg) { ....... } ← $breakpointsのキーでもいいし、
+//   @include breakpoint_up(1000px) { ... } ← ピクセル指定でもいい
+// }
+//
+// ▼「条件：◯◯未満」を指定
+// .example {
+//   @include breakpoint_down(lg) { ....... } ← $breakpointsのキーでもいいし、
+//   @include breakpoint_down(1000px) { ... } ← ピクセル指定でもいい
+// }
+//
+// ▼「条件：◯◯以上、◯◯未満」を指定
+// .example {
+//   @include breakpoint_range(sm, lg) { .......... } ← $breakpointsのキーでもいいし、
+//   @include breakpoint_range(600px, 1000px) { ... } ← ピクセル指定でもいい
+//   @include breakpoint_range(md, 1000px) { ...... } ← 混在でもいい
+// }
+// -------------------------------------------------------------------------------------
+@mixin breakpoint_up($breakpoint) {
+  $bp: map.get($breakpoints, $breakpoint);
+  @if type-of($breakpoint) == number {
+    $bp: $breakpoint;
+  }
+
+  @media screen and (min-width: #{$bp}) {
+    @content;
+  }
+}
+
+@mixin breakpoint_down($breakpoint) {
+  $bp: map.get($breakpoints, $breakpoint);
+  @if type-of($breakpoint) == number {
+    $bp: $breakpoint;
+  }
+
+  @media screen and (max-width: #{$bp - 1px}) {
+    @content;
+  }
+}
+
+@mixin breakpoint_range($start, $end) {
+  $start_bp: map.get($breakpoints, $start);
+  @if type-of($start) == number {
+    $start_bp: $start;
+  }
+
+  $end_bp: map.get($breakpoints, $end);
+  @if type-of($end) == number {
+    $end_bp: $end;
+  }
+
+  @media screen and (min-width: #{$start_bp}) and (max-width: #{$end_bp - 1px}) {
+    @content;
+  }
+}
+
+// -------------------------------------------------------------------------------------
+// Flexセンター（上下中央）
+// -------------------------------------------------------------------------------------
+@mixin flex-center($inline: false) {
+  @if $inline {
+    display: inline-flex;
+  } @else {
+    display: flex;
+  }
+
+  justify-content: center;
+  align-items: center;
+}
+
+// -------------------------------------------------------------------------------------
+// スクロールバー非表示
+// -------------------------------------------------------------------------------------
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// -------------------------------------------------------------------------------------
+// スマホ除外
+// -------------------------------------------------------------------------------------
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------
+// z-index管理
+//  @include z(modal); //$z-mapのキー名で指定
+//  @include z(dropdown, 10); //$z-mapのキー名基準でオフセット
+//  @include z(1200); //数値基準も可能
+//  @include z(1200, -1);  //数値基準でオフセット
+// -------------------------------------------------------------------------------------
+@mixin z($key, $offset: 0) {
+  @if type-of($offset) != 'number' or not unitless($offset) {
+    @error "$offset must be a unitless number.";
+  }
+
+  @if type-of($key) == 'number' {
+    @if not unitless($key) {
+      @error "z-index value must be unitless.";
+    }
+
+    z-index: $key + $offset;
+  } @else {
+    @if not map.has-key($z-map, $key) {
+      @error "z-index key `#{$key}` not found.";
+    }
+
+    z-index: map.get($z-map, $key) + $offset;
+  }
+}
