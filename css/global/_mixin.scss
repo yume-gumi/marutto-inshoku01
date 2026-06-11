@@ -5,6 +5,8 @@
 // =====================================================================================
 
 @use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
 @use 'variables' as *;
 @use 'functions' as *;
 
@@ -32,7 +34,7 @@
 // -------------------------------------------------------------------------------------
 @mixin breakpoint_up($breakpoint) {
   $bp: map.get($breakpoints, $breakpoint);
-  @if type-of($breakpoint) == number {
+  @if meta.type-of($breakpoint) == number {
     $bp: $breakpoint;
   }
 
@@ -43,7 +45,7 @@
 
 @mixin breakpoint_down($breakpoint) {
   $bp: map.get($breakpoints, $breakpoint);
-  @if type-of($breakpoint) == number {
+  @if meta.type-of($breakpoint) == number {
     $bp: $breakpoint;
   }
 
@@ -54,12 +56,12 @@
 
 @mixin breakpoint_range($start, $end) {
   $start_bp: map.get($breakpoints, $start);
-  @if type-of($start) == number {
+  @if meta.type-of($start) == number {
     $start_bp: $start;
   }
 
   $end_bp: map.get($breakpoints, $end);
-  @if type-of($end) == number {
+  @if meta.type-of($end) == number {
     $end_bp: $end;
   }
 
@@ -113,12 +115,12 @@
 //  @include z(1200, -1);  //数値基準でオフセット
 // -------------------------------------------------------------------------------------
 @mixin z($key, $offset: 0) {
-  @if type-of($offset) != 'number' or not unitless($offset) {
+  @if meta.type-of($offset) != 'number' or not math.is-unitless($offset) {
     @error "$offset must be a unitless number.";
   }
 
-  @if type-of($key) == 'number' {
-    @if not unitless($key) {
+  @if meta.type-of($key) == 'number' {
+    @if not math.is-unitless($key) {
       @error "z-index value must be unitless.";
     }
 

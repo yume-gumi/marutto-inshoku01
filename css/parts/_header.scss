@@ -1,4 +1,117 @@
- @use "../global/index" as *;
-.header{
+@use "../global/index" as *;
 
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  &--inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 8px;
+    position: relative;
+    z-index: 1;
+
+    @include breakpoint_up(md) {
+      padding-block: 12px;
+    }
+  }
+
+  &--logo {
+    img {
+      width: 120px;
+      height: auto;
+
+      @include breakpoint_up(md) {
+        width: 150px;
+      }
+    }
+  }
+
+  &--menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: $primary_dark;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &--hamburger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 54px;
+    height: 54px;
+    padding: 0 11px;
+    border: none;
+    background-color: $primary;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    span {
+      display: block;
+      width: 32px;
+      height: 2px;
+      border-radius: 999px;
+      background-color: $text_main;
+      transform-origin: center;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, width 0.3s ease-in-out;
+    }
+
+    &.active {
+      background-color: $primary_dark;
+      span:nth-child(1) {
+        width: 29px;
+        transform: translateY(8px) rotate(30deg);
+      }
+
+      span:nth-child(2) {
+        opacity: 0;
+      }
+
+      span:nth-child(3) {
+        width: 29px;
+        transform: translateY(-8px) rotate(-30deg);
+      }
+    }
+
+    @include breakpoint_up(md) {
+      gap: 8px;
+      width: 60px;
+      height: 60px;
+      padding: 0 10px;
+
+      span {
+        width: 40px;
+      }
+
+      &.active {
+        span:nth-child(1) {
+          transform: translateY(10px) rotate(30deg);
+        }
+
+        span:nth-child(3) {
+          transform: translateY(-10px) rotate(-30deg);
+        }
+      }
+    }
+  }
 }

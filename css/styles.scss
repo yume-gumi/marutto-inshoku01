@@ -1,6 +1,7 @@
 @charset "utf-8";
 
 @use "destyle";
+@use "global/base";
 
 @use "pages/archive";
 @use "pages/front-page";
@@ -10,6 +11,8 @@
 @use "pages/page-privacy";
 @use "pages/single";
 
+@use "parts/common";
+@use "parts/contact";
 @use "parts/footer";
 @use "parts/header";
 @use "parts/others";

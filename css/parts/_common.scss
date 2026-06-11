@@ -1,0 +1,8 @@
+@use "../global/index" as *;
+
+.common--inner {
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 20px;
+  margin-inline: auto;
+}

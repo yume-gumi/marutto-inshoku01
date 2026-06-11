@@ -374,6 +374,120 @@ th {
   font-weight: bold;
 }
 
+body {
+  background-color: #E8E1CB;
+}
+
+.common--inner {
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 20px;
+  margin-inline: auto;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.header--inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 8px;
+  position: relative;
+  z-index: 1;
+}
+@media screen and (min-width: 760px) {
+  .header--inner {
+    padding-block: 12px;
+  }
+}
+.header--logo img {
+  width: 120px;
+  height: auto;
+}
+@media screen and (min-width: 760px) {
+  .header--logo img {
+    width: 150px;
+  }
+}
+.header--menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #D1C7A4;
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+}
+.header--menu.active {
+  opacity: 1;
+  visibility: visible;
+}
+.header--hamburger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 54px;
+  height: 54px;
+  padding: 0 11px;
+  border: none;
+  background-color: #E8E1CB;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.header--hamburger span {
+  display: block;
+  width: 32px;
+  height: 2px;
+  border-radius: 999px;
+  background-color: #43372B;
+  transform-origin: center;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+.header--hamburger.active {
+  background-color: #D1C7A4;
+}
+.header--hamburger.active span:nth-child(1) {
+  width: 29px;
+  transform: translateY(8px) rotate(30deg);
+}
+.header--hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.header--hamburger.active span:nth-child(3) {
+  width: 29px;
+  transform: translateY(-8px) rotate(-30deg);
+}
+@media screen and (min-width: 760px) {
+  .header--hamburger {
+    gap: 8px;
+    width: 60px;
+    height: 60px;
+    padding: 0 10px;
+  }
+  .header--hamburger span {
+    width: 40px;
+  }
+  .header--hamburger.active span:nth-child(1) {
+    transform: translateY(10px) rotate(30deg);
+  }
+  .header--hamburger.active span:nth-child(3) {
+    transform: translateY(-10px) rotate(-30deg);
+  }
+}
+
 html {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */

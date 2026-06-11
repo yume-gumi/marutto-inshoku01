@@ -5,6 +5,7 @@
 // =====================================================================================
 @use 'sass:math';
 @use 'sass:map';
+@use 'sass:meta';
 @use 'variables' as *;
 
 // -------------------------------------------------------------------------------------
@@ -12,7 +13,7 @@
 //  - 参照： https://css-tricks.com/snippets/sass/strip-unit-function/
 // -------------------------------------------------------------------------------------
 @function strip_unit($number) {
-  @if type-of($number) == 'number' and not unitless($number) {
+  @if meta.type-of($number) == 'number' and not math.is-unitless($number) {
     @return math.div($number, ($number * 0 + 1));
   }
   @return $number;
@@ -23,7 +24,7 @@
 //  - 参照： https://css-tricks.com/snippets/sass/strip-unit-function/
 // -------------------------------------------------------------------------------------
 @function get_width_value($width) {
-  @if type-of($width) == 'string' {
+  @if meta.type-of($width) == 'string' {
     @if not map.has-key($breakpoints, $width) {
       @error "Breakpoint `#{$width}` is not defined in $breakpoints.";
     }
@@ -43,15 +44,15 @@
 @function to_fixed($number, $digits: 0, $round: 'round') {
   $n: 1;
   // $number must be a number
-  @if type-of($number) != number {
+  @if meta.type-of($number) != number {
     @warn '#{ $number } is not a number.';
     @return $number;
   }
   // $digits must be a unitless number
-  @if type-of($digits) != number {
+  @if meta.type-of($digits) != number {
     @warn '#{ $digits } is not a number.';
     @return $number;
-  } @else if not unitless($digits) {
+  } @else if not math.is-unitless($digits) {
     @warn '#{ $digits } has a unit.';
     @return $number;
   }
@@ -59,11 +60,11 @@
     $n: $n * 10;
   }
   @if $round == 'round' {
-    @return math.div(round($number * $n), $n);
+    @return math.div(math.round($number * $n), $n);
   } @else if $round == 'ceil' {
-    @return math.div(ceil($number * $n), $n);
+    @return math.div(math.ceil($number * $n), $n);
   } @else if $round == 'floor' {
-    @return math.div(floor($number * $n), $n);
+    @return math.div(math.floor($number * $n), $n);
   } @else {
     @warn '#{ $round } is undefined keyword.';
     @return $number;
@@ -161,7 +162,7 @@
 // 余白管理
 // -------------------------------------------------------------------------------------
 @function spacing($key) {
-  @if type-of($key) == 'number' {
+  @if meta.type-of($key) == 'number' {
     @return $key * 1px;
   }
 
@@ -185,7 +186,7 @@
 
 
 @function font_size($key) {
-  @if type-of($key) == 'number' {
+  @if meta.type-of($key) == 'number' {
     @return rem($key);
   }
 
