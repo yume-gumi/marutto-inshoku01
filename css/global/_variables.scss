@@ -22,7 +22,33 @@ $text_black: #323232;
 // -------------------------------------------------------------------------------------
 // テキスト系
 // -------------------------------------------------------------------------------------
-$root-font-size: 16px;
+$root-font-size: 16px; 
+
+$font-family-base: "Noto Sans JP", sans-serif;
+
+// Figmaテキストスタイル（font-size / line-height）
+$text-style-map: (
+  body: (
+    sp: (font-size: 15px, line-height: 24px),
+    pc: (font-size: 16px, line-height: 28px),
+  ),
+  important: (
+    sp: (font-size: 16px, line-height: 26px),
+    pc: (font-size: 18px, line-height: 28px),
+  ),
+  heading-sm: (
+    sp: (font-size: 20px, line-height: 36px),
+    pc: (font-size: 28px, line-height: 48px),
+  ),
+  heading-md: (
+    sp: (font-size: 24px, line-height: 36px),
+    pc: (font-size: 32px, line-height: 48px),
+  ),
+  heading-lg: (
+    sp: (font-size: 28px, line-height: 36px),
+    pc: (font-size: 36px, line-height: 40px),
+  ),
+);
 
 $font-size-map: (
   xs: 12px,

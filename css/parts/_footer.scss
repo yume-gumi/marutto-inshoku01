@@ -1,4 +1,198 @@
- @use "../global/index" as *;
-.footer{
+@use "../global/index" as *;
 
+.footer {
+    background-color: $primary_dark;
+    padding-top: 160px;
+    padding-bottom: 40px;
+
+    @include breakpoint_up(md) {
+        padding-block: 50px;
+    }
+
+    &--inner {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    &--main {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+
+        @include breakpoint_up(md) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: stretch;
+        }
+    }
+
+    &--content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include breakpoint_up(md) {
+            align-items: flex-start;
+        }
+    }
+
+    &--logo {
+        width: 120px;
+        padding-bottom: 30px;
+
+        @include breakpoint_up(md) {
+            width: 150px;
+        }
+
+        a {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    &--details {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+
+        &--row {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 20px;
+            align-items: start;
+
+            @include breakpoint_up(md) {
+                grid-template-columns: 64px 1fr;
+            }
+        }
+
+        &--label {
+            font-weight: 700;
+            @include text-style(body);
+        }
+
+        &--value {
+            display: block;
+            @include text-style(body);
+        }
+
+        &--link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            transition: opacity 0.3s ease-in-out;
+
+            &::after {
+                content: "→";
+            }
+
+            @include hover {
+                opacity: 0.75;
+            }
+        }
+    }
+
+    &--sns {
+        display: inline-flex;
+        color: $text_main;
+        padding-top: 8px;
+        transition: opacity 0.3s ease-in-out;
+
+        @include hover {
+            opacity: 0.75;
+        }
+    }
+
+    &--aside {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        width: 100%;
+
+        @include breakpoint_up(md) {
+            align-items: flex-start;
+            width: auto;
+            justify-content: flex-end;
+        }
+    }
+
+    &--button {
+        width: 100%;
+        max-width: 200px;
+
+        @include breakpoint_up(md) {
+            max-width: 280px;
+        }
+    }
+
+    &--nav {
+        &--list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &--item {
+            a {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-weight: 700;
+                @include text-style(body);
+                transition: opacity 0.3s ease-in-out;
+
+                &::before {
+                    content: "-";
+                    color: $text_main;
+                }
+
+                @include hover {
+                    opacity: 0.75;
+                }
+            }
+        }
+    }
+
+
+    &--bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding-top: 10px;
+        border-top: 1px solid $text_main;
+
+        @include breakpoint_up(md) {
+            flex-direction: row;
+            justify-content: flex-end;
+            gap: 40px;
+        }
+    }
+
+    &--legal {
+        display: inline-flex;
+        align-items: center;
+        @include text-style(body);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        transition: opacity 0.3s ease-in-out;
+
+        &:first-child::after {
+            content: "→";
+        }
+
+        @include hover {
+            opacity: 0.75;
+        }
+    }
 }

@@ -1,0 +1,29 @@
+@use "../global/index" as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 8px;
+  gap: 4px;
+  width: 100%;
+  background-color: $primary_light;
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 24px;
+  font-size: 13px;
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+  @include breakpoint_up(md) {
+    padding-block: 12px;
+  }
+
+  @include hover {
+    background-color: $text_main;
+    color: $primary_light;
+  }
+
+  &--icon {
+    flex-shrink: 0;
+  }
+}

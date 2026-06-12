@@ -1,5 +1,23 @@
-@use "../global/index" as  * ;
+@use "../global/index" as *;
 
-body{
-    background-color: $background;
+html {
+  @include hide-scrollbar;
+}
+
+body {
+  background-color: $background;
+  color: $text_main;
+  font-family: $font-family-base;
+  @include text-style(body);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }

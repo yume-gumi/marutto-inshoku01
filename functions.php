@@ -29,10 +29,21 @@ function create_individual_pages() {
             'title'   => 'プライバシーポリシー',
         ],
         [
+            'slug'    => 'shop',
+            'title'   => '店舗情報',
+        ],
+        [
+            'slug'    => 'menu',
+            'title'   => 'メニュー',
+        ],
+        [
             'slug'    => 'news',
             'title'   => 'お知らせ',
         ],
-        // 他にも追加できる
+        [
+            'slug'    => 'contact-thanks',
+            'title'   => 'お問い合わせ完了',
+        ],
     ];
 
     foreach ($pages as $page) {

@@ -14,22 +14,22 @@
         <nav id="header-menu" class="header--menu" aria-hidden="true">
             <div class="header--menu--inner common--inner">
                 <div class="header--menu--logo">
-                    <a href="/">
+                    <a href="<?= home_url('/'); ?>">
                         <img src="<?= get_theme_file_uri(); ?>/img/logo.svg" alt="サイトタイトル">
                     </a>
                 </div>
                 <ul class="header--menu--list">
-                    <li><a href="/">TOP</a></li>
-                    <li><a href="/">ABOUT US</a></li>
-                    <li><a href="/">SHOP</a></li>
-                    <li><a href="/">MENU</a></li>
-                    <li><a href="/">NEWS</a></li>
+                    <li><a href="<?= home_url('/'); ?>">TOP</a></li>
+                    <li><a href="<?= home_url('/about/'); ?>">ABOUT US</a></li>
+                    <li><a href="<?= home_url('/shop/'); ?>">SHOP</a></li>
+                    <li><a href="<?= home_url('/menu/'); ?>">MENU</a></li>
+                    <li><a href="<?= get_permalink(get_option('page_for_posts')); ?>">NEWS</a></li>
                 </ul>
             </div>
         </nav>
         <div class="header--inner common--inner">
             <div class="header--logo">
-                <a href="/">
+                <a href="<?= home_url('/'); ?>">
                     <img src="<?= get_theme_file_uri(); ?>/img/logo.svg" alt="サイトタイトル">
                 </a>
             </div>

@@ -71,6 +71,36 @@
 }
 
 // -------------------------------------------------------------------------------------
+// Figmaテキストスタイル
+//
+// ▼ 使用例
+// .foo {
+//   @include text-style(body);       // 本文
+//   @include text-style(important);  // 重要文
+//   @include text-style(heading-sm); // 小見出し
+//   @include text-style(heading-md); // 中見出し
+//   @include text-style(heading-lg); // 大見出し
+// }
+// -------------------------------------------------------------------------------------
+@mixin text-style($name) {
+  @if not map.has-key($text-style-map, $name) {
+    @error "Text style `#{$name}` not found.";
+  }
+
+  $style: map.get($text-style-map, $name);
+  $sp: map.get($style, sp);
+  $pc: map.get($style, pc);
+
+  font-size: map.get($sp, font-size);
+  line-height: map.get($sp, line-height);
+
+  @include breakpoint_up(md) {
+    font-size: map.get($pc, font-size);
+    line-height: map.get($pc, line-height);
+  }
+}
+
+// -------------------------------------------------------------------------------------
 // Flexセンター（上下中央）
 // -------------------------------------------------------------------------------------
 @mixin flex-center($inline: false) {
